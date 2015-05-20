@@ -36,8 +36,11 @@ class Whmcs
   {
     return new WhmcsResponse($response);
   }
-  public function __call($function, $arguments=[])
+  public function __call()
   {
+    $args = func_get_args();
+    $function = $args[0];
+    $arguments = $args[1];
     // $arguments['action'] =
     return call_user_func_array([$this, 'execute'], [$function, $arguments]);
   }
