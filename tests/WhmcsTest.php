@@ -18,6 +18,7 @@ class WhmcsTest extends PHPUnit_Framework_TestCase
   public function testCallApi()
   {
     $whmcs = Mockery::mock($this->whmcs);
+    $whmcs->shouldReceive('__call[$function, $arguments=[]]', array('getclients', []))->andReturn(new WhmcsResponse(['result'=>'success','clients'=>['client'=>[]]]));
     $whmcs->shouldReceive('getclients')->andReturn(new WhmcsResponse(['result'=>'success','clients'=>['client'=>[]]]));
     $response = $whmcs->getclients();
     $this->assertEquals(true, $response->isSuccess());
