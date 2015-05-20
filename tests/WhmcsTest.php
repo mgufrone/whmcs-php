@@ -1,6 +1,7 @@
 <?php
 use Gufy\WhmcsPhp\Config;
 use Gufy\WhmcsPhp\Whmcs;
+use Gufy\WhmcsPhp\WhmcsResponse;
 class WhmcsTest extends PHPUnit_Framework_TestCase
 {
   public $whmcs;
@@ -16,7 +17,9 @@ class WhmcsTest extends PHPUnit_Framework_TestCase
   }
   public function testCallApi()
   {
-    $response = $this->whmcs->getclients();
+    $whmcs = Mockery::mock($this->whmcs);
+    $whmcs->shouldReceive('getclients')->andReturn(new WhmcsResponse(['result'=>'success','clients'=>['client'=>[]]]));
+    $response = $whmcs->getclients();
     $this->assertEquals(true, $response->isSuccess());
     $this->assertArrayHasKey('clients', $response);
   }
