@@ -1,0 +1,24 @@
+{
+    "name": "gufy/whmcs-php",
+    "description": "Unofficial WHMCS PHP Api Package",
+    "require": {
+        "php":">=5.4",
+        "guzzlehttp/guzzle": "~5"
+    },
+    "require-dev": {
+        "phpunit/phpunit": "~4"
+    },
+    "license": "MIT",
+    "authors": [
+        {
+            "name": "Mochamad Gufron",
+            "email": "mgufronefendi@gmail.com"
+        }
+    ],
+    "autoload":{
+      "psr-4":{
+        "Gufy\\WhmcsPhp\\":"src/"
+      }
+    },
+    "minimum-stability": "stable"
+}
