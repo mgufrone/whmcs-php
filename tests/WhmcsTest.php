@@ -2,6 +2,7 @@
 use Gufy\WhmcsPhp\Config;
 use Gufy\WhmcsPhp\Whmcs;
 use Gufy\WhmcsPhp\WhmcsResponse;
+use Aeris\GuzzleHttpMock\Mock as HttpMock;
 use GuzzleHttp\Client;
 class WhmcsTest extends PHPUnit_Framework_TestCase
 {
@@ -15,6 +16,27 @@ class WhmcsTest extends PHPUnit_Framework_TestCase
       'password'=>'jago4n123',
     ]);
     $this->whmcs =  new Whmcs($this->config);
+    $this->whmcs->setBeforeExecute(function(Client $client){
+      $httpMock = new HttpMock();
+      $httpMock->attachToClient($client);
+
+      // Setup a request expectation
+      $httpMock
+          ->shouldReceiveRequest()
+          ->withUrl('http://localhost/includes/api.php')
+          ->withMethod('POST')
+          ->withBodyParams([ 'action' => 'getclients', 'username'=>'gufron','password'=>md5('jago4n123'),'responsetype'=>'json' ])
+          ->andRespondWithJson([ 'result'=>'success','clients'=>['client'=>[]] ], $statusCode = 200);
+
+      $httpMock = new HttpMock();
+      $httpMock->attachToClient($client);
+      $httpMock
+          ->shouldReceiveRequest()
+          ->withUrl('http://locialhost/includes/api.php')
+          ->withMethod('POST')
+          ->withBodyParams([ 'action' => 'getnothing', 'username'=>'gufron','password'=>md5('jago4n123'),'responsetype'=>'json' ])
+          ->andRespondWithJson([ 'result'=>'error','message'=>"Command not found" ], $statusCode = 200);
+    });
   }
   public function testCallApi()
   {
@@ -31,24 +53,6 @@ class WhmcsTest extends PHPUnit_Framework_TestCase
     $whmcs = $this->whmcs;
     // $this->config->setBaseUrl('http://undefined/hello');
     $response = $whmcs->getnothing();
-    // print_r($response);
-  }
-  /**
-  * @expectedException \Gufy\WhmcsPhp\Exceptions\ResponseException
-  * @expectedMessage Invalid IP Address : 127.0.0.3
-  */
-  public function testCallback()
-  {
-    $whmcs = $this->whmcs;
-    $whmcs->setBeforeExecute(function(Client &$client){
-      $client->setDefaultOption('config', [
-        'curl'=>[
-          CURLOPT_INTERFACE=>'127.0.0.2',
-        ]
-      ]);
-    });
-    // $this->config->setBaseUrl('http://undefined/hello');
-    $response = $whmcs->getclients();
     // print_r($response);
   }
   /**

@@ -4,30 +4,30 @@
         "Read more about it at http://getcomposer.org/doc/01-basic-usage.md#composer-lock-the-lock-file",
         "This file is @generated automatically"
     ],
-    "hash": "e5106e3fddb8eac2400916d272efc50a",
+    "hash": "29a130aab95713b10df76cd3cc7788a1",
     "packages": [
         {
             "name": "guzzlehttp/guzzle",
-            "version": "5.3.0",
+            "version": "5.0.3",
             "source": {
                 "type": "git",
                 "url": "https://github.com/guzzle/guzzle.git",
-                "reference": "f3c8c22471cb55475105c14769644a49c3262b93"
+                "reference": "6c72627de1d66832e4270e36e56acdb0d1d8f282"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/guzzle/guzzle/zipball/f3c8c22471cb55475105c14769644a49c3262b93",
-                "reference": "f3c8c22471cb55475105c14769644a49c3262b93",
+                "url": "https://api.github.com/repos/guzzle/guzzle/zipball/6c72627de1d66832e4270e36e56acdb0d1d8f282",
+                "reference": "6c72627de1d66832e4270e36e56acdb0d1d8f282",
                 "shasum": ""
             },
             "require": {
-                "guzzlehttp/ringphp": "^1.1",
+                "guzzlehttp/ringphp": "~1.0",
                 "php": ">=5.4.0"
             },
             "require-dev": {
                 "ext-curl": "*",
-                "phpunit/phpunit": "^4.0",
-                "psr/log": "^1.0"
+                "phpunit/phpunit": "~4.0",
+                "psr/log": "~1.0"
             },
             "type": "library",
             "extra": {
@@ -62,7 +62,7 @@
                 "rest",
                 "web service"
             ],
-            "time": "2015-05-20 03:47:55"
+            "time": "2014-11-04 07:09:15"
         },
         {
             "name": "guzzlehttp/ringphp",
@@ -211,6 +211,56 @@
         }
     ],
     "packages-dev": [
+        {
+            "name": "aeris/guzzle-http-mock",
+            "version": "dev-master",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/aerisweather/GuzzleHttpMock.git",
+                "reference": "4aeaeb9cf49534e38d4f7505721ccdcff56fd078"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/aerisweather/GuzzleHttpMock/zipball/4aeaeb9cf49534e38d4f7505721ccdcff56fd078",
+                "reference": "4aeaeb9cf49534e38d4f7505721ccdcff56fd078",
+                "shasum": ""
+            },
+            "require": {
+                "guzzlehttp/guzzle": "~5.0.0",
+                "php": ">=5.3.3"
+            },
+            "type": "library",
+            "autoload": {
+                "psr-4": {
+                    "Aeris\\GuzzleHttpMock\\": "src/",
+                    "Aeris\\GuzzleHttpMockTest\\": "test/GuzzleHttpMockTest'"
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "GPL"
+            ],
+            "authors": [
+                {
+                    "name": "Edan Schwartz",
+                    "email": "edanschwartz@gmail.com"
+                },
+                {
+                    "name": "Seth Miller",
+                    "email": "seth@four43.com"
+                }
+            ],
+            "description": "A mock library for verifying requests made with the Guzzle Http Client, and mocking responses.",
+            "keywords": [
+                "Guzzle",
+                "client",
+                "http",
+                "mock",
+                "mocking",
+                "testing"
+            ],
+            "time": "2015-04-13 14:31:00"
+        },
         {
             "name": "doctrine/instantiator",
             "version": "1.0.4",
@@ -1759,7 +1809,8 @@
     "minimum-stability": "stable",
     "stability-flags": {
         "mockery/mockery": 20,
-        "satooshi/php-coveralls": 20
+        "satooshi/php-coveralls": 20,
+        "aeris/guzzle-http-mock": 20
     },
     "prefer-stable": false,
     "prefer-lowest": false,

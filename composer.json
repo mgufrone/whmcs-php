@@ -8,7 +8,8 @@
     "require-dev": {
         "phpunit/phpunit": "~4",
         "mockery/mockery": "dev-master",
-        "satooshi/php-coveralls": "dev-master"
+        "satooshi/php-coveralls": "dev-master",
+        "aeris/guzzle-http-mock": "dev-master"
     },
     "license": "MIT",
     "authors": [
