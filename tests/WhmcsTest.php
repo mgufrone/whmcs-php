@@ -32,18 +32,48 @@ class WhmcsTest extends PHPUnit_Framework_TestCase
       $httpMock->attachToClient($client);
       $httpMock
           ->shouldReceiveRequest()
-          ->withUrl('http://locialhost/includes/api.php')
+          ->withUrl('http://localhost/includes/api.php')
           ->withMethod('POST')
           ->withBodyParams([ 'action' => 'getnothing', 'username'=>'gufron','password'=>md5('jago4n123'),'responsetype'=>'json' ])
           ->andRespondWithJson([ 'result'=>'error','message'=>"Command not found" ], $statusCode = 200);
+      $httpMock = new HttpMock();
+      $httpMock->attachToClient($client);
+      $httpMock
+          ->shouldReceiveRequest()
+          ->withUrl('http://undefined/hello')
+          ->withMethod('POST')
+          ->withBodyParams([ 'action' => 'getnothing', 'username'=>'gufron','password'=>md5('jago4n123'),'responsetype'=>'json' ])
+          ->andRespondWithJson([ 'result'=>'error','message'=>"Invalid IP Address: 127.0.0.2" ], $statusCode = 200);
     });
   }
   public function testCallApi()
   {
     $whmcs = $this->whmcs;
     $response = $whmcs->getclients();
+    // print_r($response);
     $this->assertEquals(true, $response->isSuccess());
     $this->assertArrayHasKey('clients', $response);
+    $this->assertEquals([], $response['clients']['client']);
+  }
+
+  /**
+  * @expectedException \Gufy\WhmcsPhp\Exceptions\ResponseException
+  */
+  public function testCallback()
+  {
+    $whmcs = $this->whmcs;
+    $this->config->setBaseUrl('http://undefined/hello');
+    $whmcs->setBeforeExecute(function(Client &$client){
+      $client->setDefaultOption('config', [
+        'curl'=>[
+          CURLOPT_INTERFACE=>'127.0.0.2',
+        ]
+      ]);
+    });
+    // $this->config->setBaseUrl('http://undefined/hello');
+    $response = $whmcs->getclients();
+    $whmcs->clearCallbacks();
+    // print_r($response);
   }
   /**
   * @expectedException \Gufy\WhmcsPhp\Exceptions\ResponseException

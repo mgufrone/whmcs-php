@@ -50,4 +50,8 @@ class Whmcs
   {
     return call_user_func_array([$this, 'execute'], [$function, $arguments]);
   }
+  public function clearCallbacks()
+  {
+    return $this->callbacks = [];
+  }
 }
