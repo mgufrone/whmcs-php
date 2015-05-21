@@ -13,7 +13,7 @@ class WhmcsResponse implements ArrayAccess
   }
   public function isSuccess()
   {
-    return $this->response['result'] == 'success';
+    return $this->result == 'success';
   }
   public function __get($var)
   {

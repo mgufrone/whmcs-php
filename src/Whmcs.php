@@ -21,7 +21,6 @@ class Whmcs
     try
     {
       $response = $client->post($this->config->getBaseUrl(), ['body'=>$parameters,'timeout' => 1200,'connect_timeout' => 10]);
-
       return $this->processResponse($response->json());
     }
     catch(ClientException $e)

@@ -42,8 +42,8 @@ class WhmcsTest extends PHPUnit_Framework_TestCase
           ->shouldReceiveRequest()
           ->withUrl('http://undefined/hello')
           ->withMethod('POST')
-          ->withBodyParams([ 'action' => 'getnothing', 'username'=>'gufron','password'=>md5('jago4n123'),'responsetype'=>'json' ])
-          ->andRespondWithJson([ 'result'=>'error','message'=>"Invalid IP Address: 127.0.0.2" ], $statusCode = 200);
+          ->withBodyParams([ 'action' => 'getclients', 'username'=>'gufron','password'=>md5('jago4n123'),'responsetype'=>'json' ])
+          ->andRespondWithJson([ 'result'=>'error','message'=>"Invalid IP Address: 127.0.0.2" ], $statusCode = 403);
     });
   }
   public function testCallApi()
@@ -55,14 +55,13 @@ class WhmcsTest extends PHPUnit_Framework_TestCase
     $this->assertArrayHasKey('clients', $response);
     $this->assertEquals([], $response['clients']['client']);
   }
-
   /**
   * @expectedException \Gufy\WhmcsPhp\Exceptions\ResponseException
   */
+
   public function testCallback()
   {
-    $whmcs = $this->whmcs;
-    $this->config->setBaseUrl('http://undefined/hello');
+    $whmcs =& $this->whmcs;
     $whmcs->setBeforeExecute(function(Client &$client){
       $client->setDefaultOption('config', [
         'curl'=>[
@@ -70,9 +69,9 @@ class WhmcsTest extends PHPUnit_Framework_TestCase
         ]
       ]);
     });
+    $this->config->setBaseUrl('http://undefined/hello');
     // $this->config->setBaseUrl('http://undefined/hello');
     $response = $whmcs->getclients();
-    $whmcs->clearCallbacks();
     // print_r($response);
   }
   /**
