@@ -10,4 +10,12 @@
       <directory>tests/</directory>
     </testsuite>
   </testsuites>
+  <logging>
+      <log type="coverage-clover" target="build/logs/clover.xml"/>
+  </logging>
+  <filter>
+    <blacklist>
+      <directory>vendor</directory>
+    </blacklist>
+  </filter>
 </phpunit>

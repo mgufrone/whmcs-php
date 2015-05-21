@@ -1,11 +1,15 @@
 <?php namespace Gufy\WhmcsPhp;
 use ArrayAccess;
+use Gufy\WhmcsPhp\Exceptions\ResponseException;
+use Gufy\WhmcsPhp\Exceptions\ReadOnlyException;
 class WhmcsResponse implements ArrayAccess
 {
   private $response;
   public function __construct($response)
   {
     $this->response = $response;
+    if(false === $this->isSuccess())
+    throw new ResponseException($this->message);
   }
   public function isSuccess()
   {
@@ -20,9 +24,9 @@ class WhmcsResponse implements ArrayAccess
   {
     return $this->response[$var];
   }
-  public function offsetSet($var, $value)
+  public function offsetSet($var, $value='')
   {
-    return $this->response[$var] = $value;;
+    throw new ReadOnlyException($var);
   }
   public function offsetExists($var)
   {
@@ -30,7 +34,6 @@ class WhmcsResponse implements ArrayAccess
   }
   public function offsetUnset($var)
   {
-    unset($this->response[$var]);
-    return $this;
+    throw new ReadOnlyException($var);
   }
 }
