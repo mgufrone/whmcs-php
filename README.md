@@ -50,4 +50,28 @@ $clients = $whmcs->getclients();
 $invoice = $whmcs->getinvoice(['invoiceid'=>1023]);
 ```
 
+If you prefer using api keys instead of user password, change the configuration like this.
+
+```php
+<?php
+
+use Gufy\WhmcsPhp\Config;
+use Gufy\WhmcsPhp\Whmcs;
+
+$config = new Config([
+  'baseUrl'=>'http://yourwhmcs/includes/api.php',
+  'username'=>'your_username',
+  'password'=>'your_api_keys',
+  'authType'=>'keys'
+]);
+
+$whmcs = new Whmcs($config);
+
+```
+
 Just call all action which is already defined at [WHMCS Developer Documentation](http://docs.whmcs.com/API)
+
+
+# Feedback & Contribution
+
+Love this package? You can add some star to this package or if you have any ideas about improving this package, just fork it and make a pull request. Thank you. :+1:

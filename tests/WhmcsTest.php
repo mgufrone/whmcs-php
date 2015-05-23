@@ -170,6 +170,7 @@ class WhmcsTest extends PHPUnit_Framework_TestCase
       // ]);
     });
     $response = $whmcs->getclients();
+    $whmcs->clearCallbacks();
     $this->assertTrue(isset($response['clients']));
   }
 }
