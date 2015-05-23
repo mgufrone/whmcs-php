@@ -36,7 +36,7 @@ class Config
   }
   public function getPassword()
   {
-    return md5($this->password);
+    return $this->authType == 'password'? md5($this->password) : $this->password;
   }
   public function setPassword($password)
   {
@@ -65,9 +65,16 @@ class Config
   {
     return $this->authType;
   }
-  public function setAuthType($authType)
+  public function useApiKeys($apiKey = '')
   {
-    $this->authType = $authType;
+    $this->authType = 'keys';
+    $this->setPassword($apiKey);
+    return $this;
+  }
+  public function usePassword($password='')
+  {
+    $this->authType = 'password';
+    $this->setPassword($password);
     return $this;
   }
 }

@@ -16,7 +16,10 @@ class Whmcs
     $this->beforeExecute($client);
     $parameters['action'] = $action;
     $parameters['username'] = $this->config->getUsername();
-    $parameters['password'] = $this->config->getPassword();
+    if($this->config->getAuthType() == 'password')
+      $parameters['password'] = $this->config->getPassword();
+    elseif($this->config->getAuthType() == 'keys')
+      $parameters['accesskey'] = $this->config->getPassword();
     $parameters['responsetype'] = 'json';
     try
     {

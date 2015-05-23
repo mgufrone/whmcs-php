@@ -39,8 +39,12 @@ class ConfigTest extends PHPUnit_Framework_TestCase
     $this->assertEquals('gufy', $config->getUsername());
 
     $this->assertEquals('password', $config->getAuthType());
-    $config->setAuthType('keys');
+    $config->useApiKeys($key = md5('hey'));
     $this->assertEquals('keys', $config->getAuthType());
+    $this->assertEquals($key, $config->getPassword());
+    $config->usePassword('helloworld');
+    $this->assertEquals('password', $config->getAuthType());
+    $this->assertEquals(md5('helloworld'), $config->getPassword());
 
     $this->assertEquals('object', $config->getResponse());
     $config->setResponse('array');
