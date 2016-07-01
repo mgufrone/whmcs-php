@@ -2,7 +2,7 @@
     "name": "gufy/whmcs-php",
     "description": "Unofficial WHMCS PHP Api Package",
     "require": {
-        "php":">=5.4",
+        "php":">=5.6",
         "guzzlehttp/guzzle": "~6"
     },
     "require-dev": {
