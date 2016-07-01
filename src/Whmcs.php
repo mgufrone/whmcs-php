@@ -3,17 +3,33 @@ use GuzzleHttp\Client;
 use GuzzleHttp\Exception\ClientException;
 use Gufy\WhmcsPhp\Exceptions\ResponseException;
 use Closure;
+use Psr\Http\Message\RequestInterface;
+use GuzzleHttp\Middleware;
+use GuzzleHttp\Psr7\Request;
 class Whmcs
 {
   private $callbacks = [];
+  static $CLIENT;
+  private $request;
   public function __construct(Config $config)
   {
     $this->config =& $config;
   }
+  public function client($config = []){
+    if(self::$CLIENT == null){
+      $config = array_merge($config, []);
+      self::$CLIENT = new Client($config);
+    }
+    return self::$CLIENT;
+  }
   public function execute($action, $parameters=[])
   {
-    $client = new Client;
-    $this->beforeExecute($client);
+    $class = $this;
+    $tapHandler = Middleware::tap(function(RequestInterface $request) use($class){
+      $class->setRequest($request);
+    });
+    $client = $this->client();
+    $clientHandler = $client->getConfig("handler");
     $parameters['action'] = $action;
     $parameters['username'] = $this->config->getUsername();
     if($this->config->getAuthType() == 'password')
@@ -23,26 +39,20 @@ class Whmcs
     $parameters['responsetype'] = 'json';
     try
     {
-      $response = $client->post($this->config->getBaseUrl(), ['body'=>$parameters,'timeout' => 1200,'connect_timeout' => 10]);
-      return $this->processResponse($response->json());
+      $response = $client->post($this->config->getBaseUrl(), ['form_params'=>$parameters,'timeout' => 1200,'connect_timeout' => 10,'handler'=>$tapHandler($clientHandler)]);
+      return $this->processResponse(json_decode($response->getBody()->getContents(), true));
     }
     catch(ClientException $e)
     {
-      $response = $e->getResponse()->json();
+      $response = json_decode($e->getResponse()->getBody()->getContents(), true);
       throw new ResponseException($response['message']);
     }
   }
-  public function beforeExecute(Client &$client)
-  {
-    foreach($this->callbacks as $closure)
-    {
-      $closure($client);
-    }
-    return $this;
+  public function setRequest(RequestInterface $request){
+    $this->request = $request;
   }
-  public function setBeforeExecute(Closure $callback)
-  {
-    return $this->callbacks[] = $callback;
+  public function getRequest(){
+    return $this->request;
   }
   public function processResponse($response)
   {
@@ -51,9 +61,5 @@ class Whmcs
   public function __call($function, array $arguments=[])
   {
     return call_user_func_array([$this, 'execute'], [$function, $arguments]);
-  }
-  public function clearCallbacks()
-  {
-    return $this->callbacks = [];
   }
 }

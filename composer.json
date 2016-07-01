@@ -3,13 +3,11 @@
     "description": "Unofficial WHMCS PHP Api Package",
     "require": {
         "php":">=5.4",
-        "guzzlehttp/guzzle": "~5"
+        "guzzlehttp/guzzle": "~6"
     },
     "require-dev": {
-        "phpunit/phpunit": "~4",
-        "mockery/mockery": "dev-master",
-        "satooshi/php-coveralls": "dev-master",
-        "aeris/guzzle-http-mock": "dev-master"
+        "phpunit/phpunit": "~5",
+        "satooshi/php-coveralls": "dev-master"
     },
     "license": "MIT",
     "authors": [
