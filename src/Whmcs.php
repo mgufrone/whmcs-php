@@ -60,6 +60,6 @@ class Whmcs
   }
   public function __call($function, array $arguments=[])
   {
-    return call_user_func_array([$this, 'execute'], [$function, $arguments]);
+    return call_user_func_array([$this, 'execute'], [$function, $arguments[0]]);
   }
 }
