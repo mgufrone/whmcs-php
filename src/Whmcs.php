@@ -22,8 +22,9 @@ class Whmcs
     }
     return self::$CLIENT;
   }
-  public function execute($action, $parameters=[])
+  public function execute($action, $args=[])
   {
+    $parameters = $args[0];
     $class = $this;
     $tapHandler = Middleware::tap(function(RequestInterface $request) use($class){
       $class->setRequest($request);
